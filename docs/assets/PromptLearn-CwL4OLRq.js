@@ -1,4 +1,4 @@
-import{j as e,L as t}from"./index-Bf6Y2iU1.js";import{G as o}from"./GuidePage-xWCnOMzB.js";import"./SEOHead-BIVZG00O.js";const i={id:"prompt-basics",icon:"fa-lightbulb",title:"프롬프트 기초",titleEn:"Prompt Fundamentals",sections:[{title:"프롬프트란 무엇인가",titleEn:"What is a Prompt",content:`AI 모델에게 원하는 결과를 얻기 위해 전달하는 입력 텍스트를 **프롬프트(Prompt)**라고 합니다.
+import{j as e,L as t}from"./index-K9O7j6Zt.js";import{G as o}from"./GuidePage-BVGut0UY.js";import"./SEOHead-DaUmLeCX.js";const i={id:"prompt-basics",icon:"fa-lightbulb",title:"프롬프트 기초",titleEn:"Prompt Fundamentals",sections:[{title:"프롬프트란 무엇인가",titleEn:"What is a Prompt",content:`AI 모델에게 원하는 결과를 얻기 위해 전달하는 입력 텍스트를 **프롬프트(Prompt)**라고 합니다.
 
 ### 프롬프트의 정의
 
@@ -1002,4 +1002,4 @@ A strategy that intentionally adds constraints to improve result quality.
 | Intermediate | Level 1 exercises SCORE 70+ | Basic prompt writing |
 | Beginner | Working on Level 1 | Early learning stage |
 
-> Practice grows faster with colleagues than alone. Actively use team exercises.`}]},p=()=>e.jsx(o,{seoTitle:"프롬프트 학습",seoTitleEn:"Prompt Learning",seoDescription:"프롬프트 기초부터 기법, SCORE 평가기준, 실전 예시까지 단계별 학습 자료",path:"/prompt/learn",dataFiles:[i,n,r,a],ctaBanner:e.jsxs("div",{className:"aifree-note",style:{marginTop:"var(--s-6)"},children:[e.jsx("i",{className:"fa-solid fa-pen-ruler"}),e.jsxs("div",{children:["배운 기준으로 직접 써보세요 —"," ",e.jsx(t,{to:"/prompt/practice",children:"작성 실습"}),"에서 점수 평가를 받고,"," ",e.jsx(t,{to:"/prompt/cases",children:"사례"}),"에서 업무별 프롬프트를 참고하세요."]})]})});export{p as default};
+> Practice grows faster with colleagues than alone. Actively use team exercises.`}]},p=()=>e.jsx(o,{heroEyebrow:"Prompt",seoTitle:"프롬프트 학습",seoTitleEn:"Prompt Learning",seoDescription:"프롬프트 기초부터 기법, SCORE 평가기준, 실전 예시까지 단계별 학습 자료",path:"/prompt/learn",dataFiles:[i,n,r,a],ctaBanner:e.jsxs("div",{className:"aifree-note",style:{marginTop:"var(--s-6)"},children:[e.jsx("i",{className:"fa-solid fa-pen-ruler"}),e.jsxs("div",{children:["배운 기준으로 직접 써보세요 —"," ",e.jsx(t,{to:"/prompt/practice",children:"작성 실습"}),"에서 점수 평가를 받고,"," ",e.jsx(t,{to:"/prompt/cases",children:"사례"}),"에서 업무별 프롬프트를 참고하세요."]})]})});export{p as default};

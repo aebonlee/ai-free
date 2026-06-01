@@ -13,6 +13,7 @@ import type { ReactElement } from 'react';
 const PromptLearn = (): ReactElement => {
   return (
     <GuidePage
+      heroEyebrow="Prompt"
       seoTitle="프롬프트 학습"
       seoTitleEn="Prompt Learning"
       seoDescription="프롬프트 기초부터 기법, SCORE 평가기준, 실전 예시까지 단계별 학습 자료"

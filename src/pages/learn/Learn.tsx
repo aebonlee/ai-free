@@ -10,9 +10,10 @@ import type { ReactElement } from 'react';
 const Learn = (): ReactElement => {
   return (
     <GuidePage
+      heroEyebrow="Learn"
       seoTitle="학습하기"
       seoTitleEn="Learn"
-      seoDescription="생성형 AI 기초부터 프롬프트 작성법까지 단계별 학습 자료"
+      seoDescription="생성형 AI를 처음 만나는 분을 위한 입문 가이드 — AI를 이해하고 안전하게 시작하기"
       path="/learn"
       dataFiles={LEARN_FILES}
       ctaBanner={

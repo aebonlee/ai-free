@@ -4,7 +4,7 @@
    ============================================ */
 
 .guide-page {
-    padding-top: var(--nav-height);
+    padding-top: var(--s-6);
     min-height: 100vh;
 }
 .guide-layout {
