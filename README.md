@@ -77,8 +77,9 @@ gh-pages 브랜치 (유일한 작업 브랜치)
 ### 저장소(백엔드)
 
 - **Supabase 미설정**: 토큰 배당/API 키가 `localStorage`에 저장됩니다(단일 브라우저 데모).
-- **Supabase 설정**: `scripts/create-aifree-settings.sql` 실행 후, 배당/키가
-  `aifree_settings` 테이블에 저장되어 여러 기기·학생 간 공유됩니다.
+- **Supabase 설정**: `scripts/supabase-setup.sql` 을 SQL Editor에서 실행하면
+  `user_profiles`(인증) · `aifree_settings`(배당/키) · `check_user_status` 등이
+  한 번에 생성되어, 배당/키가 DB에 저장되고 여러 기기·학생 간 공유됩니다.
 
 ## ⚠️ 보안 주의
 

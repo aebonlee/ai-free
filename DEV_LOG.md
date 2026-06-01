@@ -41,7 +41,7 @@
 - `/playground`: 배당 토큰으로 유료 모델 호출 → **응답 토큰만큼 자동 차감**,
   소진 시 차단 → 무료요금제로 유도 (로그인 필요)
 - `/admin/allocation`(강사 전용): API 키 충전 + 학생 이메일별 토큰 배당/초기화
-- `scripts/create-aifree-settings.sql`: (선택) Supabase 테이블 + RLS
+- `scripts/supabase-setup.sql`: (선택) Supabase 전체 설정 — user_profiles·aifree_settings·check_user_status·RLS·Storage
 
 ### 5) 코드 리뷰 반영 (gemini-code-assist)
 - **[High] 동시성**: 배당을 학생별 개별 키(`alloc_<email>`)로 분리 →
