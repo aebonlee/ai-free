@@ -62,9 +62,13 @@ gh-pages 브랜치 (유일한 작업 브랜치)
 2. `npm run dev` 로 로컬 확인 (http://localhost:5174)
 3. `git push` → Actions가 자동 빌드·배포 (Actions 탭에서 진행상황 확인)
 
-### GitHub 저장소 설정 (최초 1회)
+### GitHub 저장소 설정 (최초 1회) — 둘 중 하나
 
-- **Settings → Pages → Build and deployment → Source: `GitHub Actions`**
+빌드 결과가 `docs/`에 커밋되므로 아래 두 방법 모두 동작합니다(빈 페이지 방지).
+
+- **(A) 간단)** Settings → Pages → **Deploy from a branch → `gh-pages` / `/docs`**
+- **(B) 권장)** Settings → Pages → **Source: `GitHub Actions`**
+- ⚠️ **`/(root)` 로 두면 안 됩니다** — 루트의 개발용 `index.html`이 떠서 흰 화면이 됩니다.
 - **Settings → General → Default branch → `gh-pages`** 로 변경(저장소를 gh-pages 단일로 운영)
 - 커스텀 도메인(`ai-free.dreamitbiz.com`)은 `public/CNAME`(→ 빌드 시 `dist/CNAME`)로 포함됩니다.
 
