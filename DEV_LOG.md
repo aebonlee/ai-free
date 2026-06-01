@@ -51,6 +51,11 @@
 - **[Medium]**: AuthContext 프로필 생성 try/catch, SearchModal/ImageUpload 타이머
   언마운트 정리, CodeBlock 정규식 `g` 플래그 방어
 
+### 10) OG(미리보기) 이미지 — 다크블루 + 5색 테마
+- `scripts/generate-og.cjs`를 AI Free Academy용으로 재작성(sharp)
+- 1200x630, 다크블루 배경, 5색 테마 점, 4대 AI 태그, 도메인
+- `public/og-image.png`, `og-image-v2.png` 생성, index.html OG 태그(og:url/title/description/type/image/site_name) 정합
+
 ### 9) "학습하기" 메뉴 추가 (AI 기초 ~ 프롬프트)
 - 상단 메뉴 About 다음에 「학습하기」 추가, 라우트 `/learn`
 - GuidePage(좌측 접이식 사이드바 + 마크다운)로 3개 그룹 학습자료 제작:
