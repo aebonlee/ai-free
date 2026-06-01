@@ -6,24 +6,8 @@
  * 세션당 1회만 표시, Superadmin 자동 바이패스, 조회 실패 시 미표시 (fail-safe)
  */
 import { useState, useEffect } from 'react';
-import type { User, SupabaseClient } from '@supabase/supabase-js';
-
-/** 사이트별 supabase export 패턴 차이를 자동 감지 */
-async function resolveSupabase(): Promise<SupabaseClient | null> {
-  // @vite-ignore prevents Rollup from statically resolving these dynamic imports
-  const paths = ['../utils/supabase', '../config/supabase'];
-  for (const p of paths) {
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const mod: any = await import(/* @vite-ignore */ p);
-      if (typeof mod.default === 'function') return mod.default();
-      if (mod.default) return mod.default;
-      if (mod.supabase) return mod.supabase;
-      if (typeof mod.getSupabase === 'function') return mod.getSupabase();
-    } catch { /* try next path */ }
-  }
-  return null;
-}
+import type { User } from '@supabase/supabase-js';
+import getSupabase from '../utils/supabase';
 
 const SUPERADMIN_EMAILS = [
   'aebon@kakao.com',
@@ -63,7 +47,7 @@ export default function PaymentNudgePopup({
     // user_licenses 조회
     const checkLicense = async () => {
       try {
-        const supabase = await resolveSupabase();
+        const supabase = getSupabase();
         if (!supabase) return; // Supabase 없으면 미표시
 
         const { data, error } = await supabase

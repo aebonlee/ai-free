@@ -1,4 +1,4 @@
-import { useState, useRef, type ReactElement, type DragEvent, type ChangeEvent } from 'react';
+import { useState, useRef, useEffect, type ReactElement, type DragEvent, type ChangeEvent } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useToast } from '../contexts/ToastContext';
 import { uploadImage } from '../utils/storage';
@@ -16,6 +16,14 @@ const ImageUpload = ({ value, onChange, folder = 'uploads' }: ImageUploadProps):
   const [progress, setProgress] = useState(0);
   const [dragOver, setDragOver] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // 언마운트 시 진행률 타이머 정리 (메모리 누수 방지)
+  useEffect(() => {
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, []);
 
   const handleFile = async (file: File) => {
     if (!file || !file.type.startsWith('image/')) return;
@@ -26,20 +34,24 @@ const ImageUpload = ({ value, onChange, folder = 'uploads' }: ImageUploadProps):
     setUploading(true);
     setProgress(0);
     // Simulate progress since Supabase doesn't provide upload progress
-    const progressInterval = setInterval(() => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = setInterval(() => {
       setProgress((prev) => {
-        if (prev >= 90) { clearInterval(progressInterval); return 90; }
+        if (prev >= 90) {
+          if (intervalRef.current) clearInterval(intervalRef.current);
+          return 90;
+        }
         return prev + Math.random() * 15;
       });
     }, 200);
     try {
       const url = await uploadImage(file, folder);
-      clearInterval(progressInterval);
+      if (intervalRef.current) clearInterval(intervalRef.current);
       setProgress(100);
       onChange(url);
       showToast(t('auth.uploadComplete') || '업로드 완료', 'success');
     } catch (err) {
-      clearInterval(progressInterval);
+      if (intervalRef.current) clearInterval(intervalRef.current);
       console.error('Upload error:', err);
       showToast((err as Error).message, 'error');
     } finally {

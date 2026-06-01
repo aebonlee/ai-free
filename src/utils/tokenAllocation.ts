@@ -9,11 +9,15 @@
  *  - Supabase(`aifree_settings`)가 설정되어 있으면 그곳에 저장 → 여러 기기/학생 공유
  *  - 없으면 localStorage로 폴백 → 단일 브라우저 데모용
  *
+ * 동시성: 학생별 배당은 `alloc_${email}` 개별 키에 저장합니다. 각 학생의 사용량
+ * 기록(recordUsage)이 자기 키만 갱신하므로, 여러 학생이 동시에 실습실을 사용해도
+ * 서로의 잔여량을 덮어쓰는 경쟁 상태(Lost Update)가 발생하지 않습니다.
+ *
  * 보안 주의: API 키를 브라우저에서 직접 사용하므로 폐쇄된 교육용 환경에서만
  * 사용하세요. 운영 환경에서는 서버(Edge Function) 프록시 사용을 권장합니다.
  */
 
-import { getSetting, setSetting } from './settings';
+import { getSetting, setSetting, deleteSetting, getSettingsByPrefix } from './settings';
 import type { ProviderId } from '../config/aiProviders';
 
 export interface Allocation {
@@ -21,13 +25,17 @@ export interface Allocation {
   used: number;      // 사용 토큰
 }
 
-/** email → provider → Allocation */
-export type AllocationMap = Record<string, Partial<Record<ProviderId, Allocation>>>;
+/** provider → Allocation (학생 1명) */
+export type StudentAllocations = Partial<Record<ProviderId, Allocation>>;
+
+/** email → provider → Allocation (전체) */
+export type AllocationMap = Record<string, StudentAllocations>;
 
 const LS_KEYS = 'aifree_apikeys';
 const LS_ALLOC = 'aifree_allocations';
-const SETTING_ALLOC = 'allocations';
+const ALLOC_PREFIX = 'alloc_';
 const settingKeyName = (p: ProviderId) => `apikey_${p}`;
+const allocKey = (email: string) => `${ALLOC_PREFIX}${email}`;
 
 /* ─────────────── localStorage helpers ─────────────── */
 
@@ -87,84 +95,121 @@ export async function isKeyConfigured(provider: ProviderId): Promise<boolean> {
   return Boolean(k);
 }
 
-/* ─────────────── 배당 맵 ─────────────── */
+/* ─────────────── 학생별 배당 (개별 키) ─────────────── */
 
-export async function getAllocationMap(): Promise<AllocationMap> {
+/** 학생 한 명의 전체 배당 조회 */
+export async function getStudentAllocations(email: string): Promise<StudentAllocations> {
+  const e = normEmail(email);
   if (hasSupabase()) {
-    const raw = await getSetting(SETTING_ALLOC);
+    const raw = await getSetting(allocKey(e));
     if (raw) {
       try {
-        return JSON.parse(raw) as AllocationMap;
+        return JSON.parse(raw) as StudentAllocations;
       } catch {
-        /* fall through */
+        /* fall through to localStorage */
       }
     }
+    // Supabase 사용 중이면 학생 키가 없으면 빈 값 (localStorage 혼용 방지)
+    return {};
   }
-  return lsGet<AllocationMap>(LS_ALLOC, {});
+  const map = lsGet<AllocationMap>(LS_ALLOC, {});
+  return map[e] ?? {};
 }
 
-async function saveAllocationMap(map: AllocationMap): Promise<void> {
+/** 학생 한 명의 배당 전체 저장 (자기 키만 갱신 → 학생 간 경쟁 상태 없음) */
+async function saveStudentAllocations(email: string, allocs: StudentAllocations): Promise<void> {
+  const e = normEmail(email);
   if (hasSupabase()) {
     try {
-      await setSetting(SETTING_ALLOC, JSON.stringify(map));
+      await setSetting(allocKey(e), JSON.stringify(allocs));
       return;
     } catch {
-      /* fall back */
+      /* fall back to localStorage */
     }
   }
+  const map = lsGet<AllocationMap>(LS_ALLOC, {});
+  map[e] = allocs;
   lsSet(LS_ALLOC, map);
 }
 
 /** 학생 한 명의 특정 provider 배당 조회 */
 export async function getAllocation(email: string, provider: ProviderId): Promise<Allocation> {
-  const map = await getAllocationMap();
-  return map[normEmail(email)]?.[provider] ?? { allocated: 0, used: 0 };
+  const allocs = await getStudentAllocations(email);
+  return allocs[provider] ?? { allocated: 0, used: 0 };
 }
 
-/** 학생 한 명의 전체 배당 조회 */
-export async function getStudentAllocations(email: string): Promise<Partial<Record<ProviderId, Allocation>>> {
-  const map = await getAllocationMap();
-  return map[normEmail(email)] ?? {};
+/** 전체 배당 맵 조회 — 강사 화면용 */
+export async function getAllocationMap(): Promise<AllocationMap> {
+  if (hasSupabase()) {
+    const rows = await getSettingsByPrefix(ALLOC_PREFIX);
+    const map: AllocationMap = {};
+    for (const { key, value } of rows) {
+      const email = key.slice(ALLOC_PREFIX.length);
+      try {
+        map[email] = JSON.parse(value) as StudentAllocations;
+      } catch {
+        map[email] = {};
+      }
+    }
+    return map;
+  }
+  return lsGet<AllocationMap>(LS_ALLOC, {});
 }
 
 /** 배당량 설정(절대값) — 강사 전용 */
 export async function setAllocation(email: string, provider: ProviderId, allocated: number): Promise<void> {
-  const e = normEmail(email);
-  const map = await getAllocationMap();
-  if (!map[e]) map[e] = {};
-  const prev = map[e][provider] ?? { allocated: 0, used: 0 };
-  map[e][provider] = { allocated: Math.max(0, Math.floor(allocated)), used: prev.used };
-  await saveAllocationMap(map);
+  const allocs = await getStudentAllocations(email);
+  const prev = allocs[provider] ?? { allocated: 0, used: 0 };
+  allocs[provider] = { allocated: Math.max(0, Math.floor(allocated)), used: prev.used };
+  await saveStudentAllocations(email, allocs);
 }
 
-/** 사용량 차감 기록 — 호출 후 실제 사용 토큰만큼 증가 */
+/** 여러 provider 배당을 한 번에 설정 — 단일 저장(네트워크 왕복 1회) */
+export async function setStudentAllocations(
+  email: string,
+  amounts: Partial<Record<ProviderId, number>>
+): Promise<void> {
+  const allocs = await getStudentAllocations(email);
+  for (const [pid, amount] of Object.entries(amounts) as [ProviderId, number][]) {
+    const prev = allocs[pid] ?? { allocated: 0, used: 0 };
+    allocs[pid] = { allocated: Math.max(0, Math.floor(amount)), used: prev.used };
+  }
+  await saveStudentAllocations(email, allocs);
+}
+
+/** 사용량 차감 기록 — 호출 후 실제 사용 토큰만큼 증가 (자기 키만 갱신) */
 export async function recordUsage(email: string, provider: ProviderId, tokens: number): Promise<Allocation> {
-  const e = normEmail(email);
-  const map = await getAllocationMap();
-  if (!map[e]) map[e] = {};
-  const prev = map[e][provider] ?? { allocated: 0, used: 0 };
+  const allocs = await getStudentAllocations(email);
+  const prev = allocs[provider] ?? { allocated: 0, used: 0 };
   const next: Allocation = { allocated: prev.allocated, used: prev.used + Math.max(0, Math.ceil(tokens)) };
-  map[e][provider] = next;
-  await saveAllocationMap(map);
+  allocs[provider] = next;
+  await saveStudentAllocations(email, allocs);
   return next;
 }
 
 /** 사용량 초기화 — 강사 전용 */
 export async function resetUsage(email: string, provider: ProviderId): Promise<void> {
-  const e = normEmail(email);
-  const map = await getAllocationMap();
-  if (map[e]?.[provider]) {
-    map[e][provider]!.used = 0;
-    await saveAllocationMap(map);
+  const allocs = await getStudentAllocations(email);
+  if (allocs[provider]) {
+    allocs[provider]!.used = 0;
+    await saveStudentAllocations(email, allocs);
   }
 }
 
 /** 학생 삭제 — 강사 전용 */
 export async function removeStudent(email: string): Promise<void> {
   const e = normEmail(email);
-  const map = await getAllocationMap();
+  if (hasSupabase()) {
+    try {
+      await deleteSetting(allocKey(e));
+      return;
+    } catch {
+      /* fall back */
+    }
+  }
+  const map = lsGet<AllocationMap>(LS_ALLOC, {});
   delete map[e];
-  await saveAllocationMap(map);
+  lsSet(LS_ALLOC, map);
 }
 
 /** 남은 토큰 */

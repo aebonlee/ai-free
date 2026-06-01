@@ -46,18 +46,24 @@ export const AuthProvider = ({ children }: AuthProviderProps): ReactElement => {
       if (client) {
         const meta = authUser.user_metadata || {};
         const currentDomain = window.location.hostname;
-        const { data } = await client.from('user_profiles').insert({
-          id: authUser.id,
-          email: authUser.email || '',
-          name: meta.full_name || meta.name || '',
-          display_name: meta.full_name || meta.name || '',
-          phone: '',
-          provider: authUser.app_metadata?.provider || 'email',
-          signup_domain: currentDomain,
-          visited_sites: [currentDomain],
-          role: 'member',
-        }).select().single();
-        if (data) p = data as UserProfile;
+        try {
+          const { data, error } = await client.from('user_profiles').insert({
+            id: authUser.id,
+            email: authUser.email || '',
+            name: meta.full_name || meta.name || '',
+            display_name: meta.full_name || meta.name || '',
+            phone: '',
+            provider: authUser.app_metadata?.provider || 'email',
+            signup_domain: currentDomain,
+            visited_sites: [currentDomain],
+            role: 'member',
+          }).select().single();
+          if (error) throw error;
+          if (data) p = data as UserProfile;
+        } catch (err) {
+          // 프로필 자동 생성 실패해도 인증 초기화 흐름은 계속 진행 (fail-safe)
+          console.error('Failed to auto-create user profile:', err);
+        }
       }
     }
     // signup_domain, role 자동 초기화 + 현재 도메인 visited_sites 자동 추가

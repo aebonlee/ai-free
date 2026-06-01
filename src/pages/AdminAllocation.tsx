@@ -8,6 +8,7 @@ import type { ProviderId } from '../config/aiProviders';
 import {
   getAllocationMap,
   setAllocation,
+  setStudentAllocations,
   setApiKey,
   isKeyConfigured,
   resetUsage,
@@ -73,13 +74,12 @@ const AdminAllocation = (): ReactElement => {
   const addStudent = async () => {
     const email = newEmail.trim().toLowerCase();
     if (!email || !email.includes('@')) { showToast('올바른 이메일을 입력하세요.', 'warning'); return; }
+    // 모든 provider 배당을 모아 한 번만 저장 (네트워크 왕복 1회)
+    const amounts: Partial<Record<ProviderId, number>> = {};
     for (const p of CALLABLE) {
-      const amt = parseInt(newAmounts[p.id] || '0', 10);
-      if (amt > 0) await setAllocation(email, p.id, amt);
+      amounts[p.id] = parseInt(newAmounts[p.id] || '0', 10) || 0;
     }
-    // 배당이 하나도 없으면 0으로라도 학생 등록
-    const hasAny = CALLABLE.some((p) => parseInt(newAmounts[p.id] || '0', 10) > 0);
-    if (!hasAny) await setAllocation(email, CALLABLE[0].id, 0);
+    await setStudentAllocations(email, amounts);
     setNewEmail('');
     setNewAmounts({});
     await reload();

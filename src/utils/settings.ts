@@ -32,3 +32,14 @@ export async function deleteSetting(key: string): Promise<void> {
   const { error } = await supabase.from(TABLE).delete().eq('key', key);
   if (error) throw error;
 }
+
+/** 접두사로 시작하는 모든 설정 조회 (예: 'alloc_%') */
+export async function getSettingsByPrefix(prefix: string): Promise<{ key: string; value: string }[]> {
+  const supabase = getSupabase();
+  if (!supabase) return [];
+  const { data } = await supabase
+    .from(TABLE)
+    .select('key, value')
+    .like('key', `${prefix}%`);
+  return (data as { key: string; value: string }[] | null) ?? [];
+}

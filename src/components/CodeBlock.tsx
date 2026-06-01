@@ -62,7 +62,8 @@ function getRules(lang: string) {
 function tokenizeLine(line: string, rules: { type: string; re: RegExp }[]) {
   const tokens: { start: number; end: number; type: string; text: string }[] = [];
   for (const rule of rules) {
-    const re = new RegExp(rule.re.source, rule.re.flags);
+    const flags = rule.re.flags.includes('g') ? rule.re.flags : rule.re.flags + 'g';
+    const re = new RegExp(rule.re.source, flags);
     let m;
     while ((m = re.exec(line)) !== null) {
       const text = m[1] !== undefined && rule.type !== 'comment' && rule.type !== 'keyword' && rule.type !== 'builtin' && rule.type !== 'decorator' ? m[1] : m[0];

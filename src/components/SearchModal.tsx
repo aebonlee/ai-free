@@ -27,6 +27,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps): ReactElement | null
     }
     return () => {
       document.body.style.overflow = '';
+      if (timerRef.current) clearTimeout(timerRef.current);
     };
   }, [isOpen]);
 
