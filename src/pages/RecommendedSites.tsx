@@ -18,13 +18,6 @@ const DREAMIT_SITES: SiteLink[] = [
     tag: '현재 사이트',
   },
   {
-    name: 'DASCO AI Academy',
-    nameEn: '다스코 생성형AI 교육',
-    url: 'https://dasco.dreamitbiz.com',
-    desc: '다스코(주) 직원을 위한 생성형 인공지능 업무 활용 교육 플랫폼. 기초·중급 커리큘럼, 프롬프트 학습, AI 실습을 제공합니다.',
-    tag: '교육 사이트',
-  },
-  {
     name: 'ChatGPT 활용 교육',
     nameEn: 'ChatGPT Education',
     url: 'https://chatgpt.dreamitbiz.com',
@@ -177,7 +170,7 @@ const RecommendedSites = (): ReactElement => {
           <div className="section-head">
             <div className="section-num">&mdash; 01</div>
             <h2 className="section-title-ed" style={{ fontSize: 'clamp(22px, 2.5vw, 34px)' }}>DreamIT Biz <span className="accent">교육 사이트</span></h2>
-            <div className="section-meta">7 sites</div>
+            <div className="section-meta">6 sites</div>
           </div>
           <div className="rec-grid">
             {DREAMIT_SITES.map((s, i) => <SiteCard key={s.url} site={s} index={i} />)}
