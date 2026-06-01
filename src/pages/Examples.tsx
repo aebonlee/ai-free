@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useMemo } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
 import { useToast } from '../contexts/ToastContext';
 import { EXAMPLES, CATEGORIES } from '../data/examples';
@@ -12,6 +12,13 @@ const LEVEL_COLORS: Record<Example['level'], string> = {
   기초: '#1B2A4A',
   활용: '#C8102E',
 };
+
+/** URL 슬러그 → 한글 레벨 */
+const LEVELS: { slug: string; level: Example['level']; label: string; desc: string }[] = [
+  { slug: 'beginner', level: '입문', label: '입문', desc: '처음 AI를 써보는 단계' },
+  { slug: 'basic', level: '기초', label: '기초', desc: '기본 활용에 익숙해지는 단계' },
+  { slug: 'advanced', level: '활용', label: '활용', desc: '실무에 응용하는 단계' },
+];
 
 const ExampleCard = ({ ex }: { ex: Example }): ReactElement => {
   const { showToast } = useToast();
@@ -81,47 +88,108 @@ const ExampleCard = ({ ex }: { ex: Example }): ReactElement => {
 };
 
 const Examples = (): ReactElement => {
+  const { level: levelSlug } = useParams<{ level: string }>();
+  const activeLevelDef = LEVELS.find((l) => l.slug === levelSlug);
+  const activeLevel = activeLevelDef?.level ?? null;
+
   const [cat, setCat] = useState<string>('전체');
-  const filtered = cat === '전체' ? EXAMPLES : EXAMPLES.filter((e) => e.category === cat);
+
+  // 현재 레벨로 1차 필터된 집합 (카테고리 카운트 계산용)
+  const levelFiltered = useMemo(
+    () => (activeLevel ? EXAMPLES.filter((e) => e.level === activeLevel) : EXAMPLES),
+    [activeLevel]
+  );
+
+  const filtered = cat === '전체' ? levelFiltered : levelFiltered.filter((e) => e.category === cat);
+
+  const heading = activeLevelDef ? `${activeLevelDef.label} 예제` : '학습 예제';
+  const sub = activeLevelDef
+    ? `${activeLevelDef.desc} — 복사해서 무료 AI에 붙여넣어 보세요.`
+    : '수준과 카테고리를 골라, 복사해서 무료 AI에 붙여넣기만 하면 됩니다.';
 
   return (
     <>
-      <SEOHead title="학습 예제" description="카테고리별 실전 AI 프롬프트 예제 모음" />
+      <SEOHead title={heading} description="수준별·카테고리별 실전 AI 프롬프트 예제 모음" />
 
       <section className="page-header-ed">
         <div className="container">
           <div className="eyebrow">Examples · {EXAMPLES.length}+</div>
-          <h2>바로 따라 하는 학습 예제</h2>
-          <p>복사해서 무료 AI에 붙여넣기만 하면 됩니다. 카테고리별로 골라 연습해 보세요.</p>
+          <h2>{heading}</h2>
+          <p>{sub}</p>
         </div>
       </section>
 
-      <section className="section-ed">
+      <section className="section-ed" style={{ paddingTop: 'var(--s-6)' }}>
         <div className="container">
-          {/* 카테고리 필터 */}
-          <div className="aifree-filter">
-            <button
-              className={`aifree-filter-btn${cat === '전체' ? ' active' : ''}`}
-              onClick={() => setCat('전체')}
-            >
-              전체 <span>{EXAMPLES.length}</span>
-            </button>
-            {CATEGORIES.map((c) => {
-              const count = EXAMPLES.filter((e) => e.category === c).length;
-              return (
-                <button
-                  key={c}
-                  className={`aifree-filter-btn${cat === c ? ' active' : ''}`}
-                  onClick={() => setCat(c)}
+          <div className="aifree-ex-layout">
+            {/* 왼쪽 사이드바 */}
+            <aside className="aifree-ex-side">
+              <div className="aifree-ex-side-group">
+                <div className="aifree-ex-side-title">수준별</div>
+                <Link
+                  to="/examples"
+                  className={`aifree-ex-side-link${!activeLevel ? ' active' : ''}`}
                 >
-                  {c} <span>{count}</span>
-                </button>
-              );
-            })}
-          </div>
+                  <span>전체</span><span className="aifree-ex-side-count">{EXAMPLES.length}</span>
+                </Link>
+                {LEVELS.map((l) => {
+                  const count = EXAMPLES.filter((e) => e.level === l.level).length;
+                  return (
+                    <Link
+                      key={l.slug}
+                      to={`/examples/${l.slug}`}
+                      className={`aifree-ex-side-link${activeLevel === l.level ? ' active' : ''}`}
+                    >
+                      <span>
+                        <i className="fa-solid fa-circle" style={{ color: LEVEL_COLORS[l.level], fontSize: '8px', marginRight: '8px' }} />
+                        {l.label}
+                      </span>
+                      <span className="aifree-ex-side-count">{count}</span>
+                    </Link>
+                  );
+                })}
+              </div>
 
-          <div className="aifree-ex-grid">
-            {filtered.map((ex) => <ExampleCard key={ex.id} ex={ex} />)}
+              <div className="aifree-ex-side-group">
+                <div className="aifree-ex-side-title">카테고리</div>
+                <button
+                  className={`aifree-ex-side-link${cat === '전체' ? ' active' : ''}`}
+                  onClick={() => setCat('전체')}
+                >
+                  <span>전체</span><span className="aifree-ex-side-count">{levelFiltered.length}</span>
+                </button>
+                {CATEGORIES.map((c) => {
+                  const count = levelFiltered.filter((e) => e.category === c).length;
+                  return (
+                    <button
+                      key={c}
+                      className={`aifree-ex-side-link${cat === c ? ' active' : ''}`}
+                      onClick={() => setCat(c)}
+                      disabled={count === 0}
+                    >
+                      <span>{c}</span><span className="aifree-ex-side-count">{count}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </aside>
+
+            {/* 메인: 예제 카드 */}
+            <div className="aifree-ex-main">
+              <div className="aifree-ex-resultbar">
+                <strong>{filtered.length}</strong>개 예제
+                {activeLevelDef && <span className="aifree-ex-resulttag" style={{ background: LEVEL_COLORS[activeLevelDef.level] }}>{activeLevelDef.label}</span>}
+                {cat !== '전체' && <span className="aifree-ex-resulttag aifree-ex-resulttag-cat">{cat}</span>}
+              </div>
+
+              {filtered.length === 0 ? (
+                <p className="aifree-lead">해당 조건의 예제가 없습니다.</p>
+              ) : (
+                <div className="aifree-ex-grid">
+                  {filtered.map((ex) => <ExampleCard key={ex.id} ex={ex} />)}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </section>

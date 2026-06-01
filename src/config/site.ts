@@ -82,7 +82,14 @@ const site: SiteConfig = {
         { path: '/tools/genspark', labelKey: 'site.nav.toolGenspark' },
       ]
     },
-    { path: '/examples', labelKey: 'site.nav.examples', activePath: '/examples' },
+    { path: '/examples', labelKey: 'site.nav.examples', activePath: '/examples',
+      dropdown: [
+        { path: '/examples', labelKey: 'site.nav.examplesAll' },
+        { path: '/examples/beginner', labelKey: 'site.nav.examplesBeginner' },
+        { path: '/examples/basic', labelKey: 'site.nav.examplesBasic' },
+        { path: '/examples/advanced', labelKey: 'site.nav.examplesAdvanced' },
+      ]
+    },
     { path: '/playground', labelKey: 'site.nav.playground', activePath: '/playground' },
     { path: '/recommended', labelKey: 'site.nav.recommended', activePath: '/recommended' },
   ],

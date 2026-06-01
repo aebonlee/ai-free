@@ -103,7 +103,37 @@
 .aifree-filter-btn.active { background: var(--ink-surface); border-color: var(--ink-surface); color: #fff; }
 .aifree-filter-btn.active span { background: rgba(255,255,255,0.2); color: #fff; }
 
-.aifree-ex-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 18px; }
+/* ── 예제: 좌측 사이드바 레이아웃 ── */
+.aifree-ex-layout { display: grid; grid-template-columns: 240px 1fr; gap: 28px; align-items: start; }
+.aifree-ex-side { position: sticky; top: 100px; display: flex; flex-direction: column; gap: 22px; }
+.aifree-ex-side-group { display: flex; flex-direction: column; gap: 4px; }
+.aifree-ex-side-title {
+  font-size: 12px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--text-light); padding: 0 12px 8px; border-bottom: 1px solid var(--line); margin-bottom: 6px;
+}
+.aifree-ex-side-link {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  width: 100%; text-align: left; font-family: inherit; font-size: 14px; font-weight: 600;
+  color: var(--text-secondary); background: none; border: none; cursor: pointer;
+  padding: 9px 12px; border-radius: var(--radius-sm); text-decoration: none;
+  border-left: 3px solid transparent; transition: var(--transition-base);
+}
+.aifree-ex-side-link:hover:not(:disabled) { background: var(--navy-50); color: var(--ink); }
+.aifree-ex-side-link.active { background: var(--navy-50); color: var(--ink); border-left-color: var(--gold); font-weight: 800; }
+.aifree-ex-side-link:disabled { opacity: 0.4; cursor: default; }
+.aifree-ex-side-count {
+  font-size: 11px; font-weight: 700; color: var(--text-light);
+  background: var(--navy-100); border-radius: var(--radius-full); padding: 1px 8px; min-width: 22px; text-align: center;
+}
+.aifree-ex-side-link.active .aifree-ex-side-count { background: var(--gold); color: #fff; }
+
+.aifree-ex-main { min-width: 0; }
+.aifree-ex-resultbar { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; font-size: 14px; color: var(--text-secondary); }
+.aifree-ex-resultbar strong { color: var(--ink); font-size: 18px; }
+.aifree-ex-resulttag { font-size: 12px; font-weight: 700; color: #fff; padding: 3px 12px; border-radius: var(--radius-full); }
+.aifree-ex-resulttag-cat { background: var(--navy-600); }
+
+.aifree-ex-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 18px; }
 .aifree-ex-card {
   background: var(--bg-white); border: 1px solid var(--line);
   border-radius: var(--radius-lg); padding: 20px 22px;
@@ -277,4 +307,7 @@
   .aifree-pg { grid-template-columns: 1fr; }
   .aifree-pg-side { position: static; }
   .aifree-ex-grid { grid-template-columns: 1fr; }
+  .aifree-ex-layout { grid-template-columns: 1fr; gap: 18px; }
+  .aifree-ex-side { position: static; flex-direction: row; flex-wrap: wrap; gap: 10px 24px; }
+  .aifree-ex-side-group { flex: 1 1 240px; }
 }

@@ -182,6 +182,10 @@ export const translations: Record<string, Record<string, unknown>> = {
         toolGemini: 'Gemini 가이드',
         toolGenspark: 'Genspark 가이드',
         examples: '학습 예제',
+        examplesAll: '전체 예제',
+        examplesBeginner: '입문 예제',
+        examplesBasic: '기초 예제',
+        examplesAdvanced: '활용 예제',
         playground: 'AI 실습실',
         recommended: '추천사이트'
       },
@@ -376,6 +380,10 @@ export const translations: Record<string, Record<string, unknown>> = {
         toolGemini: 'Gemini Guide',
         toolGenspark: 'Genspark Guide',
         examples: 'Examples',
+        examplesAll: 'All Examples',
+        examplesBeginner: 'Beginner',
+        examplesBasic: 'Basic',
+        examplesAdvanced: 'Advanced',
         playground: 'Playground',
         recommended: 'Recommended'
       },

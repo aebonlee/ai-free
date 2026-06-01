@@ -55,8 +55,9 @@ const PublicLayout = (): ReactElement => {
             <Route path="/tools" element={<Tools />} />
             <Route path="/tools/:provider" element={<ToolGuide />} />
 
-            {/* 학습 예제 */}
+            {/* 학습 예제 (수준별) */}
             <Route path="/examples" element={<Examples />} />
+            <Route path="/examples/:level" element={<Examples />} />
 
             {/* 실습실 (로그인 필요) */}
             <Route path="/playground" element={<AuthGuard><Playground /></AuthGuard>} />
