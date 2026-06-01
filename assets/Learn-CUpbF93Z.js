@@ -1,4 +1,4 @@
-import{j as e,L as t}from"./index-CBk8uYWu.js";import{G as n}from"./GuidePage-DjB3050Y.js";import"./SEOHead-Drm6t28u.js";const a={id:"understand-ai",icon:"fa-solid fa-robot",title:"AI 이해하기",titleEn:"Understanding AI",sections:[{title:"생성형 AI란 무엇인가",titleEn:"What is Generative AI",content:`## 생성형 AI(Generative AI)란?
+import{j as e,L as t}from"./index-cZMzOg2R.js";import{G as n}from"./GuidePage-DYfmIVKZ.js";import"./SEOHead-CY1DSyxp.js";const a={id:"understand-ai",icon:"fa-solid fa-robot",title:"AI 이해하기",titleEn:"Understanding AI",sections:[{title:"생성형 AI란 무엇인가",titleEn:"What is Generative AI",content:`## 생성형 AI(Generative AI)란?
 
 **생성형 AI**는 사람이 만든 방대한 글·이미지·코드를 학습해서, 새로운 내용을 *만들어내는* 인공지능입니다. 기존의 "검색"이 이미 있는 자료를 **찾아주는** 것이라면, 생성형 AI는 질문에 맞춰 문장을 **새로 써주는** 것이 가장 큰 차이입니다.
 

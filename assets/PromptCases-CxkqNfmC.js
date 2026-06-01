@@ -1,4 +1,4 @@
-import{r as n,j as e,l as p}from"./index-CBk8uYWu.js";import{S as c}from"./SEOHead-Drm6t28u.js";const d=["전체","보고서/문서","이메일/공문","데이터/분석","기획/전략","회의/협업","교육/발표","마케팅/홍보","개인/일상"],a=[{id:1,category:"보고서/문서",level:"초급",title:"주간 업무 보고서",situation:"한 주 동안 한 일을 메모만 가지고 보고서로 정리할 때",prompt:`너는 우리 팀의 실무 담당자야. 아래 메모로 팀장 보고용 주간 업무 보고서를 작성해줘.
+import{r as n,j as e,l as p}from"./index-cZMzOg2R.js";import{S as c}from"./SEOHead-CY1DSyxp.js";const d=["전체","보고서/문서","이메일/공문","데이터/분석","기획/전략","회의/협업","교육/발표","마케팅/홍보","개인/일상"],a=[{id:1,category:"보고서/문서",level:"초급",title:"주간 업무 보고서",situation:"한 주 동안 한 일을 메모만 가지고 보고서로 정리할 때",prompt:`너는 우리 팀의 실무 담당자야. 아래 메모로 팀장 보고용 주간 업무 보고서를 작성해줘.
 
 [이번 주 한 일]
 - (메모를 불릿으로 나열)

@@ -1,4 +1,4 @@
-import{r as g,j as e,L as u}from"./index-CBk8uYWu.js";import{S as b}from"./SEOHead-Drm6t28u.js";const v=[{id:1,category:"이메일",title:"거래처 납기 지연 사과 이메일",situation:"자재 수급 문제로 거래처에 약속한 납기를 1주일 못 지키게 되었습니다. 사과와 함께 대안을 제시해야 합니다.",goal:"공손하고 전문적인 사과 이메일을 작성하는 프롬프트를 만드세요.",keywords:["사과","납기","지연","대안","일정","원인","재발방지"],roleKeywords:["담당자","전문가","역할","비서","매니저"],formatKeywords:["문단","형식","제목","서명","이메일","구성","순서"],exampleAnswer:`너는 우리 회사의 영업 담당자야.
+import{r as g,j as e,L as u}from"./index-cZMzOg2R.js";import{S as b}from"./SEOHead-CY1DSyxp.js";const v=[{id:1,category:"이메일",title:"거래처 납기 지연 사과 이메일",situation:"자재 수급 문제로 거래처에 약속한 납기를 1주일 못 지키게 되었습니다. 사과와 함께 대안을 제시해야 합니다.",goal:"공손하고 전문적인 사과 이메일을 작성하는 프롬프트를 만드세요.",keywords:["사과","납기","지연","대안","일정","원인","재발방지"],roleKeywords:["담당자","전문가","역할","비서","매니저"],formatKeywords:["문단","형식","제목","서명","이메일","구성","순서"],exampleAnswer:`너는 우리 회사의 영업 담당자야.
 거래처에 보낼 납기 지연 사과 이메일을 작성해줘.
 
 [상황]
