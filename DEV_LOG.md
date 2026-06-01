@@ -12,7 +12,7 @@
 | 목표 | 생성형 AI 입문자가 **무료요금제**로 충분히 연습하고, 강사가 배당한 **토큰만큼** 유료 모델까지 직접 체험 |
 | 기반 | DreamIT Biz 하위 사이트 템플릿(`dasco`)의 기본 인프라를 상속 (동일 기본 셋팅) |
 | 스택 | React 19 · TypeScript · Vite 7 · React Router 7 · Supabase |
-| 배포 | 단일 `gh-pages` 브랜치 (소스 + `docs/` 빌드 공존, GitHub Pages `/docs` 서빙) |
+| 배포 | 단일 `gh-pages` 브랜치 + GitHub Actions 자동 빌드·배포 (Pages Source: GitHub Actions) |
 | 도메인 | https://ai-free.dreamitbiz.com |
 
 ---
@@ -51,10 +51,11 @@
 - **[Medium]**: AuthContext 프로필 생성 try/catch, SearchModal/ImageUpload 타이머
   언마운트 정리, CodeBlock 정규식 `g` 플래그 방어
 
-### 6) 배포 구조 전환 — 단일 `gh-pages` 브랜치
-- `vite.config.ts` `outDir: dist → docs`, `public/.nojekyll` 추가
-- 소스(루트) + 빌드(`docs/`)를 한 브랜치에서 운영, Pages는 `gh-pages /docs` 서빙
-- `npm run deploy` = 빌드 → `docs/` 커밋·푸시
+### 6) 배포 구조 — 단일 `gh-pages` 브랜치 + GitHub Actions
+- `gh-pages` 한 브랜치에서 개발, 푸시 시 Actions가 자동 빌드·배포
+- `.github/workflows/deploy.yml`: build → `dist` 업로드 → `actions/deploy-pages`
+- Pages Source는 "GitHub Actions"로 설정 (폴더 선택 불필요 → 빈 페이지 이슈 해소)
+- 빌드 산출물(`dist/`)은 커밋하지 않음(매 푸시마다 새로 빌드)
 
 ---
 
