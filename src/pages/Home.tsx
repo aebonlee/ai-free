@@ -193,7 +193,7 @@ const Home = (): ReactElement => {
             <div>
               <div className="cta-eyebrow">&mdash; 지금 시작</div>
               <h2 className="cta-title-ed">
-                돈 들이지 않고,<br />
+                무료로 이용하며,<br />
                 <span className="accent">AI와 친해지기.</span>
               </h2>
             </div>
