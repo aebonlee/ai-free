@@ -39,6 +39,9 @@ jobs:
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
+        with:
+          # Pages가 꺼져 있으면 자동으로 'GitHub Actions' 소스로 활성화
+          enablement: true
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
