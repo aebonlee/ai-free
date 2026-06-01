@@ -46,8 +46,8 @@ const Home = (): ReactElement => {
               </div>
               <h1 className="hero-title-ed">
                 무료로 배우고,<br />
-                <span className="accent">배당받은 만큼</span><br />
-                <span className="accent">유료까지</span>
+                <span className="accent">구독 없이 충전해</span><br />
+                <span className="accent">쓴 만큼만</span>
               </h1>
               <p className="hero-lead">
                 ChatGPT · Claude · Gemini · Genspark를 무료요금제 범위에서 직접 실습합니다.
