@@ -133,7 +133,16 @@
 .aifree-ex-resulttag { font-size: 12px; font-weight: 700; color: #fff; padding: 3px 12px; border-radius: var(--radius-full); }
 .aifree-ex-resulttag-cat { background: var(--navy-600); }
 
-.aifree-ex-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 18px; }
+.aifree-ex-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+
+/* 예제 상세 설명 블록 */
+.aifree-ex-detail {
+  background: var(--navy-50); border: 1px solid var(--line);
+  border-radius: var(--radius-md); padding: 14px 16px; font-size: 14px; line-height: 1.75;
+}
+.aifree-ex-detail strong { display: block; color: var(--ink); margin-bottom: 6px; }
+.aifree-ex-detail strong i { color: var(--gold); margin-right: 6px; }
+.aifree-ex-detail p { margin: 0; color: var(--text-secondary); }
 .aifree-ex-card {
   background: var(--bg-white); border: 1px solid var(--line);
   border-radius: var(--radius-lg); padding: 20px 22px;

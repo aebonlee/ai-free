@@ -58,6 +58,11 @@ const ExampleCard = ({ ex }: { ex: Example }): ReactElement => {
 
       {open && (
         <div className="aifree-ex-body">
+          <div className="aifree-ex-detail">
+            <strong><i className="fa-solid fa-circle-info" /> 상세 설명</strong>
+            <p>{ex.detail}</p>
+          </div>
+
           <div className="aifree-ex-prompt-head">
             <span>프롬프트</span>
             <button className="aifree-copy-btn" onClick={copy}>

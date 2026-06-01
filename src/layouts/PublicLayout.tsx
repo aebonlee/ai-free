@@ -21,6 +21,7 @@ const ToolGuide = lazy(() => import('../pages/ToolGuide'));
 const Examples = lazy(() => import('../pages/Examples'));
 const Playground = lazy(() => import('../pages/Playground'));
 const AdminAllocation = lazy(() => import('../pages/AdminAllocation'));
+const Learn = lazy(() => import('../pages/learn/Learn'));
 const RecommendedSites = lazy(() => import('../pages/RecommendedSites'));
 const AboutPage = lazy(() => import('../pages/About'));
 const InstructorIntro = lazy(() => import('../pages/InstructorIntro'));
@@ -54,6 +55,9 @@ const PublicLayout = (): ReactElement => {
             {/* AI 도구 가이드 */}
             <Route path="/tools" element={<Tools />} />
             <Route path="/tools/:provider" element={<ToolGuide />} />
+
+            {/* 학습하기 (AI 기초 ~ 프롬프트) */}
+            <Route path="/learn" element={<Learn />} />
 
             {/* 학습 예제 (수준별) */}
             <Route path="/examples" element={<Examples />} />

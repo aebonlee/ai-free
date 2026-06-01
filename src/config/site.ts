@@ -71,6 +71,16 @@ const site: SiteConfig = {
       ]
     },
     {
+      labelKey: 'site.nav.learn',
+      path: '/learn',
+      activePath: '/learn',
+      dropdown: [
+        { path: '/learn', labelKey: 'site.nav.learnAiBasics' },
+        { path: '/learn', labelKey: 'site.nav.learnPromptBasics' },
+        { path: '/learn', labelKey: 'site.nav.learnPromptAdv' },
+      ]
+    },
+    {
       labelKey: 'site.nav.tools',
       path: '/tools',
       activePath: '/tools',
