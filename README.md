@@ -65,9 +65,15 @@ gh-pages 브랜치 (유일한 작업 브랜치)
 ### GitHub 저장소 설정 (최초 1회)
 
 - **Settings → Pages → Build and deployment → Source: `GitHub Actions`**
+- **Settings → General → Default branch → `gh-pages`** 로 변경(저장소를 gh-pages 단일로 운영)
 - 커스텀 도메인(`ai-free.dreamitbiz.com`)은 `public/CNAME`(→ 빌드 시 `dist/CNAME`)로 포함됩니다.
 
 > 워크플로: `.github/workflows/deploy.yml` (gh-pages 푸시 시 자동 실행)
+
+### 브랜치 정책
+- **`gh-pages`** : 유일한 작업·배포 브랜치
+- 기본 브랜치를 gh-pages로 바꾼 뒤 `main`, `claude/*` 브랜치는 삭제 권장
+  (저장소 Branches 페이지에서 삭제 — 소유자 권한 필요)
 
 ### 강사 계정(관리자) 설정
 
