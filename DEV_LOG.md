@@ -51,6 +51,13 @@
 - **[Medium]**: AuthContext 프로필 생성 try/catch, SearchModal/ImageUpload 타이머
   언마운트 정리, CodeBlock 정규식 `g` 플래그 방어
 
+### 7) "빈 저장소/빈 페이지" 원인 해결 — 코드를 기본 브랜치(main)로 통일
+- 증상: 저장소 첫 화면이 비어 보이고 사이트가 빈 페이지
+- 원인: 모든 코드가 `gh-pages`에만 있고 기본 브랜치 `main`은 비어 있었음
+  (GitHub 저장소/Pages는 기본 브랜치를 기준으로 표시·배포)
+- 조치: `main`을 전체 코드로 fast-forward, Actions가 `main`·`gh-pages` 모두에서 배포
+- 로컬 프리뷰로 빌드 정상 렌더 확인(코드 문제 아님을 검증)
+
 ### 6) 배포 구조 — 단일 `gh-pages` 브랜치 + GitHub Actions
 - `gh-pages` 한 브랜치에서 개발, 푸시 시 Actions가 자동 빌드·배포
 - `.github/workflows/deploy.yml`: build → `dist` 업로드 → `actions/deploy-pages`
