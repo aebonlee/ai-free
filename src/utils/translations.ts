@@ -190,6 +190,10 @@ export const translations: Record<string, Record<string, unknown>> = {
         examplesBeginner: '입문 예제',
         examplesBasic: '기초 예제',
         examplesAdvanced: '활용 예제',
+        prompt: '프롬프트',
+        promptLearn: '프롬프트 학습',
+        promptPractice: '프롬프트 작성실습',
+        promptCases: '프롬프트 사례',
         playground: 'AI 실습실',
         recommended: '추천사이트'
       },
@@ -392,6 +396,10 @@ export const translations: Record<string, Record<string, unknown>> = {
         examplesBeginner: 'Beginner',
         examplesBasic: 'Basic',
         examplesAdvanced: 'Advanced',
+        prompt: 'Prompt',
+        promptLearn: 'Prompt Learning',
+        promptPractice: 'Writing Practice',
+        promptCases: 'Prompt Cases',
         playground: 'Playground',
         recommended: 'Recommended'
       },

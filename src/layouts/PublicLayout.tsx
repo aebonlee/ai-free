@@ -22,6 +22,9 @@ const Examples = lazy(() => import('../pages/Examples'));
 const Playground = lazy(() => import('../pages/Playground'));
 const AdminAllocation = lazy(() => import('../pages/AdminAllocation'));
 const Learn = lazy(() => import('../pages/learn/Learn'));
+const PromptLearn = lazy(() => import('../pages/prompt/PromptLearn'));
+const PromptPractice = lazy(() => import('../pages/prompt/PromptPractice'));
+const PromptCases = lazy(() => import('../pages/prompt/PromptCases'));
 const RecommendedSites = lazy(() => import('../pages/RecommendedSites'));
 const AboutPage = lazy(() => import('../pages/About'));
 const InstructorIntro = lazy(() => import('../pages/InstructorIntro'));
@@ -62,6 +65,11 @@ const PublicLayout = (): ReactElement => {
             {/* 학습 예제 (수준별) */}
             <Route path="/examples" element={<Examples />} />
             <Route path="/examples/:level" element={<Examples />} />
+
+            {/* 프롬프트 (학습 · 작성실습 · 사례) */}
+            <Route path="/prompt/learn" element={<PromptLearn />} />
+            <Route path="/prompt/practice" element={<PromptPractice />} />
+            <Route path="/prompt/cases" element={<PromptCases />} />
 
             {/* 실습실 (로그인 필요) */}
             <Route path="/playground" element={<AuthGuard><Playground /></AuthGuard>} />

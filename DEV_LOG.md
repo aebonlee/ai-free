@@ -51,6 +51,13 @@
 - **[Medium]**: AuthContext 프로필 생성 try/catch, SearchModal/ImageUpload 타이머
   언마운트 정리, CodeBlock 정규식 `g` 플래그 방어
 
+### 11) "프롬프트" 메뉴 신설 (dasco 3메뉴 응용)
+- 상단 드롭다운 「프롬프트」: 학습 / 작성실습 / 사례
+- **프롬프트 학습**(/prompt/learn): GuidePage + 범용 자료 4그룹(기초·기법·SCORE 평가·예시)
+- **프롬프트 작성실습**(/prompt/practice): SCORE 5기준 자동 채점 엔진 + 일반 업무 시나리오 6종, 점수·등급·피드백·모범답안
+- **프롬프트 사례**(/prompt/cases): 8개 카테고리 20개 일반 업무 프롬프트(복사)
+- 예제 페이지: 아코디언화(다른 예제 열면 이전 것 자동 닫힘)
+
 ### 10) OG(미리보기) 이미지 — 다크블루 + 5색 테마
 - `scripts/generate-og.cjs`를 AI Free Academy용으로 재작성(sharp)
 - 1200x630, 다크블루 배경, 5색 테마 점, 4대 AI 태그, 도메인

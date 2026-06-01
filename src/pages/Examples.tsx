@@ -20,9 +20,8 @@ const LEVELS: { slug: string; level: Example['level']; label: string; desc: stri
   { slug: 'advanced', level: '활용', label: '활용', desc: '실무에 응용하는 단계' },
 ];
 
-const ExampleCard = ({ ex }: { ex: Example }): ReactElement => {
+const ExampleCard = ({ ex, open, onToggle }: { ex: Example; open: boolean; onToggle: () => void }): ReactElement => {
   const { showToast } = useToast();
-  const [open, setOpen] = useState(false);
 
   const copy = async () => {
     try {
@@ -35,7 +34,7 @@ const ExampleCard = ({ ex }: { ex: Example }): ReactElement => {
 
   return (
     <div className={`aifree-ex-card${open ? ' open' : ''}`}>
-      <div className="aifree-ex-head" onClick={() => setOpen((v) => !v)}>
+      <div className="aifree-ex-head" onClick={onToggle}>
         <div className="aifree-ex-head-main">
           <span className="aifree-level" style={{ background: LEVEL_COLORS[ex.level] }}>{ex.level}</span>
           <span className="aifree-ex-title">{ex.title}</span>
@@ -98,6 +97,7 @@ const Examples = (): ReactElement => {
   const activeLevel = activeLevelDef?.level ?? null;
 
   const [cat, setCat] = useState<string>('전체');
+  const [openId, setOpenId] = useState<string | null>(null); // 한 번에 하나만 펼침(아코디언)
 
   // 현재 레벨로 1차 필터된 집합 (카테고리 카운트 계산용)
   const levelFiltered = useMemo(
@@ -159,7 +159,7 @@ const Examples = (): ReactElement => {
                 <div className="aifree-ex-side-title">카테고리</div>
                 <button
                   className={`aifree-ex-side-link${cat === '전체' ? ' active' : ''}`}
-                  onClick={() => setCat('전체')}
+                  onClick={() => { setCat('전체'); setOpenId(null); }}
                 >
                   <span>전체</span><span className="aifree-ex-side-count">{levelFiltered.length}</span>
                 </button>
@@ -169,7 +169,7 @@ const Examples = (): ReactElement => {
                     <button
                       key={c}
                       className={`aifree-ex-side-link${cat === c ? ' active' : ''}`}
-                      onClick={() => setCat(c)}
+                      onClick={() => { setCat(c); setOpenId(null); }}
                       disabled={count === 0}
                     >
                       <span>{c}</span><span className="aifree-ex-side-count">{count}</span>
@@ -191,7 +191,14 @@ const Examples = (): ReactElement => {
                 <p className="aifree-lead">해당 조건의 예제가 없습니다.</p>
               ) : (
                 <div className="aifree-ex-grid">
-                  {filtered.map((ex) => <ExampleCard key={ex.id} ex={ex} />)}
+                  {filtered.map((ex) => (
+                    <ExampleCard
+                      key={ex.id}
+                      ex={ex}
+                      open={openId === ex.id}
+                      onToggle={() => setOpenId((cur) => (cur === ex.id ? null : ex.id))}
+                    />
+                  ))}
                 </div>
               )}
             </div>

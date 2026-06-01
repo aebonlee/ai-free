@@ -100,6 +100,16 @@ const site: SiteConfig = {
         { path: '/examples/advanced', labelKey: 'site.nav.examplesAdvanced' },
       ]
     },
+    {
+      labelKey: 'site.nav.prompt',
+      path: '/prompt/learn',
+      activePath: '/prompt',
+      dropdown: [
+        { path: '/prompt/learn', labelKey: 'site.nav.promptLearn' },
+        { path: '/prompt/practice', labelKey: 'site.nav.promptPractice' },
+        { path: '/prompt/cases', labelKey: 'site.nav.promptCases' },
+      ]
+    },
     { path: '/playground', labelKey: 'site.nav.playground', activePath: '/playground' },
     { path: '/recommended', labelKey: 'site.nav.recommended', activePath: '/recommended' },
   ],
