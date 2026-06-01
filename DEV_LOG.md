@@ -51,6 +51,11 @@
 - **[Medium]**: AuthContext 프로필 생성 try/catch, SearchModal/ImageUpload 타이머
   언마운트 정리, CodeBlock 정규식 `g` 플래그 방어
 
+### 13) 배포 구조를 클래식(main=소스 / gh-pages=빌드)으로 전환
+- 기존 DreamIT 사이트와 동일 구조로 통일: 소스는 main, 빌드 결과만 gh-pages 루트
+- `npm run deploy`(gh-pages -d dist --dotfiles)로 게시, Pages는 gh-pages /(root) 서빙
+- main에서 docs/ 제거, outDir dist, gh-pages devDependency 추가
+
 ### 12) 학습하기 ↔ 프롬프트 메뉴 역할 분리 (중복 제거)
 - 학습하기(/learn): 프롬프트 작성 관련 그룹 제거 → **AI 기초/입문 전용**
   (AI 이해하기 / AI 안전하게 쓰기, 6섹션 + 프롬프트 메뉴로 연결)

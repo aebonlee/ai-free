@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc -b"
+    "typecheck": "tsc -b",
+    "deploy": "npm run build && gh-pages -d dist --dotfiles -b gh-pages"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.96.0",
@@ -22,6 +23,7 @@
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react": "^5.1.1",
+    "gh-pages": "^6.3.0",
     "sharp": "^0.34.5",
     "typescript": "~5.8.3",
     "vite": "^7.3.1"

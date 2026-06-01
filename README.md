@@ -44,35 +44,32 @@ npm run dev            # http://localhost:5174
 npm run build          # 프로덕션 빌드 → dist/
 ```
 
-## 개발 & 배포 방식 (단일 `gh-pages` 브랜치 + `/docs` 서빙)
+## 개발 & 배포 방식 (클래식: main=소스 / gh-pages=빌드)
 
-이 저장소는 **`gh-pages` 브랜치 하나로 통일**해서 운영합니다.
-소스코드는 루트에 있고, **빌드 결과물을 `docs/`에 커밋**해 GitHub Pages가 `/docs`를 서빙합니다.
+다른 DreamIT 사이트와 동일한 표준 구조입니다.
 
 ```
-gh-pages 브랜치 (유일한 작업·배포 브랜치)
-├── src/ · index.html …   ← 개발용 소스 (루트)
-└── docs/                 ← 빌드 결과 (GitHub Pages가 /docs 서빙)
+main 브랜치      ← 소스코드 (기본 브랜치)
+  └─ npm run deploy → 빌드(dist) → gh-pages 브랜치 루트에 게시
+gh-pages 브랜치  ← 빌드 결과물만 (GitHub Pages가 /(root) 서빙)
 ```
 
 ### 개발 & 배포 흐름
 
-1. `gh-pages` 브랜치에서 작업 → `npm run dev` 로 로컬 확인 (http://localhost:5174)
-2. 배포: `npm run build` (→ `docs/` 생성) → `git add docs && git commit && git push`
+1. `main` 브랜치에서 작업 → `npm run dev` 로 로컬 확인 (http://localhost:5174)
+2. 배포: **`npm run deploy`** → `dist` 빌드 후 `gh-pages` 브랜치 루트에 자동 게시
 
-### GitHub 저장소 설정 (최초 1회) ★ 빈 페이지 해결의 핵심
+### GitHub 저장소 설정 (최초 1회)
 
+- **Settings → General → Default branch → `main`**
 - **Settings → Pages → Build and deployment**
   - Source: **Deploy from a branch**
-  - Branch: **`gh-pages`** · 폴더: **`/docs`** → **Save**
-- ⚠️ 폴더를 **`/(root)` 로 두면 흰 화면**입니다 — 루트의 개발용 `index.html`(`/src/main.tsx` 참조)이 떠서 깨집니다. 반드시 **`/docs`**.
-- **Settings → General → Default branch → `gh-pages`**
-- 커스텀 도메인(`ai-free.dreamitbiz.com`)은 `public/CNAME`(→ `docs/CNAME`)로 포함됩니다.
+  - Branch: **`gh-pages`** · 폴더: **`/ (root)`** → **Save**
+- 커스텀 도메인(`ai-free.dreamitbiz.com`)은 `public/CNAME`(→ 빌드 결과 루트 `CNAME`)로 포함됩니다.
 
 ### 브랜치 정책
-- **`gh-pages`** : 유일한 작업·배포 브랜치
-- 기본 브랜치를 gh-pages로 바꾼 뒤 `main`, `claude/*` 브랜치는 삭제 권장
-  (저장소 Branches 페이지에서 삭제 — 소유자 권한 필요)
+- **`main`** : 소스코드(작업) · **`gh-pages`** : 배포(빌드 결과, 자동 관리)
+- `claude/*` 등 임시 브랜치는 삭제 권장(저장소 Branches 페이지, 소유자 권한)
 
 ### 강사 계정(관리자) 설정
 

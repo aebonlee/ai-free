@@ -5,10 +5,8 @@ export default defineConfig({
   plugins: [react()],
   base: '/',
   build: {
-    // 빌드 결과를 docs/에 출력해 커밋합니다.
-    // → GitHub Pages를 "Deploy from a branch: gh-pages /docs"로도,
-    //   "GitHub Actions"로도 모두 서빙할 수 있습니다(빈 페이지 방지).
-    outDir: 'docs',
+    // 빌드 결과(dist)는 gh-pages 브랜치 루트로 배포합니다(npm run deploy).
+    outDir: 'dist',
     assetsDir: 'assets',
     emptyOutDir: true
   },
