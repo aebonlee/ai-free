@@ -44,35 +44,30 @@ npm run dev            # http://localhost:5174
 npm run build          # 프로덕션 빌드 → dist/
 ```
 
-## 개발 & 배포 방식 (단일 `gh-pages` 브랜치 + GitHub Actions)
+## 개발 & 배포 방식 (단일 `gh-pages` 브랜치 + `/docs` 서빙)
 
 이 저장소는 **`gh-pages` 브랜치 하나로 통일**해서 운영합니다.
-소스코드는 `gh-pages` 브랜치에 있고, 푸시하면 **GitHub Actions가 자동으로 빌드·배포**합니다.
-빌드 산출물(`dist/`)은 커밋하지 않습니다(워크플로가 매번 새로 빌드).
+소스코드는 루트에 있고, **빌드 결과물을 `docs/`에 커밋**해 GitHub Pages가 `/docs`를 서빙합니다.
 
 ```
-gh-pages 브랜치 (유일한 작업 브랜치)
-└── push → GitHub Actions(.github/workflows/deploy.yml)
-          → npm run build → dist/ 를 Pages 아티팩트로 배포
+gh-pages 브랜치 (유일한 작업·배포 브랜치)
+├── src/ · index.html …   ← 개발용 소스 (루트)
+└── docs/                 ← 빌드 결과 (GitHub Pages가 /docs 서빙)
 ```
 
-### 개발 흐름
+### 개발 & 배포 흐름
 
-1. `gh-pages` 브랜치에서 작업 → 기능 단위로 커밋
-2. `npm run dev` 로 로컬 확인 (http://localhost:5174)
-3. `git push` → Actions가 자동 빌드·배포 (Actions 탭에서 진행상황 확인)
+1. `gh-pages` 브랜치에서 작업 → `npm run dev` 로 로컬 확인 (http://localhost:5174)
+2. 배포: `npm run build` (→ `docs/` 생성) → `git add docs && git commit && git push`
 
-### GitHub 저장소 설정 (최초 1회) — 둘 중 하나
+### GitHub 저장소 설정 (최초 1회) ★ 빈 페이지 해결의 핵심
 
-빌드 결과가 `docs/`에 커밋되므로 아래 두 방법 모두 동작합니다(빈 페이지 방지).
-
-- **(A) 간단)** Settings → Pages → **Deploy from a branch → `gh-pages` / `/docs`**
-- **(B) 권장)** Settings → Pages → **Source: `GitHub Actions`**
-- ⚠️ **`/(root)` 로 두면 안 됩니다** — 루트의 개발용 `index.html`이 떠서 흰 화면이 됩니다.
-- **Settings → General → Default branch → `gh-pages`** 로 변경(저장소를 gh-pages 단일로 운영)
-- 커스텀 도메인(`ai-free.dreamitbiz.com`)은 `public/CNAME`(→ 빌드 시 `dist/CNAME`)로 포함됩니다.
-
-> 워크플로: `.github/workflows/deploy.yml` (gh-pages 푸시 시 자동 실행)
+- **Settings → Pages → Build and deployment**
+  - Source: **Deploy from a branch**
+  - Branch: **`gh-pages`** · 폴더: **`/docs`** → **Save**
+- ⚠️ 폴더를 **`/(root)` 로 두면 흰 화면**입니다 — 루트의 개발용 `index.html`(`/src/main.tsx` 참조)이 떠서 깨집니다. 반드시 **`/docs`**.
+- **Settings → General → Default branch → `gh-pages`**
+- 커스텀 도메인(`ai-free.dreamitbiz.com`)은 `public/CNAME`(→ `docs/CNAME`)로 포함됩니다.
 
 ### 브랜치 정책
 - **`gh-pages`** : 유일한 작업·배포 브랜치
