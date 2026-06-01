@@ -17,11 +17,11 @@ const Learn = (): ReactElement => {
       dataFiles={LEARN_FILES}
       ctaBanner={
         <div className="aifree-note" style={{ marginTop: 'var(--s-6)' }}>
-          <i className="fa-solid fa-flask" />
+          <i className="fa-solid fa-arrow-right-long" />
           <div>
-            배운 내용을 바로 적용해 보세요 —{' '}
-            <Link to="/examples">학습 예제</Link>에서 따라 하고,{' '}
-            <Link to="/playground">실습실</Link>에서 직접 대화해 봅니다.
+            AI를 이해했다면 다음은 <b>잘 부리는 법</b>입니다 —{' '}
+            <Link to="/prompt/learn">프롬프트 학습</Link>으로 넘어가거나,{' '}
+            <Link to="/examples">학습 예제</Link>·<Link to="/playground">실습실</Link>에서 직접 해보세요.
           </div>
         </div>
       }
