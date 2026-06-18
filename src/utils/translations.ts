@@ -192,6 +192,7 @@ export const translations: Record<string, Record<string, unknown>> = {
         prompt: '프롬프트',
         promptLearn: '프롬프트 학습',
         promptPractice: '프롬프트 작성실습',
+        promptEvaluation: '프롬프트 평가',
         promptCases: '프롬프트 사례',
         playground: 'AI 실습실',
         recommended: '추천사이트'
@@ -397,6 +398,7 @@ export const translations: Record<string, Record<string, unknown>> = {
         prompt: 'Prompt',
         promptLearn: 'Prompt Learning',
         promptPractice: 'Writing Practice',
+        promptEvaluation: 'Prompt Evaluation',
         promptCases: 'Prompt Cases',
         playground: 'Playground',
         recommended: 'Recommended'

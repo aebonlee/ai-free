@@ -1,0 +1,449 @@
+/* ===== Prompt Evaluation Practice (claude 이식 — ai-free 토큰 매핑) ===== */
+.eval-page .eval-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 20px;
+    margin-bottom: 16px;
+}
+
+.eval-input-panel,
+.eval-score-panel {
+    background: var(--bg-white);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+}
+
+.eval-input-panel h3,
+.eval-score-panel h3 {
+    margin: 0 0 12px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.eval-page .practice-textarea {
+    width: 100%;
+    min-height: 200px;
+    resize: vertical;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    padding: 14px;
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+    background: var(--bg-light-gray);
+    color: var(--text-primary);
+}
+
+.eval-page .practice-textarea:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+}
+
+.eval-charcount {
+    font-size: 12px;
+    color: var(--text-light);
+}
+
+.eval-input-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.eval-input-actions .practice-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.eval-disclaimer {
+    margin: 10px 0 0;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--text-light);
+}
+
+.eval-section-sub {
+    margin: -8px 0 18px;
+    font-size: 14px;
+    color: var(--text-light);
+}
+
+.eval-criterion-score {
+    margin-left: 8px;
+    font-size: 12px;
+    font-weight: 800;
+    padding: 1px 8px;
+    border-radius: 999px;
+    background: var(--navy-100);
+    color: var(--primary-blue);
+    vertical-align: middle;
+}
+
+.eval-criterion-why {
+    margin: 0 0 12px;
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: var(--text-light);
+}
+
+.eval-criterion-why i {
+    color: var(--primary-blue);
+    margin-right: 4px;
+}
+
+.eval-detect {
+    margin-top: 10px;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    color: #1d4ed8;
+}
+
+.eval-detect i {
+    margin-right: 6px;
+}
+
+.eval-feedback.good {
+    border-color: #86efac;
+    background: #f0fdf4;
+}
+
+.eval-feedback.good h3 {
+    color: #047857;
+}
+
+.eval-feedback.good p {
+    color: #065f46;
+    font-size: 14px;
+}
+
+.eval-score-panel {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.eval-score-big {
+    font-size: 56px;
+    font-weight: 800;
+    line-height: 1;
+    margin-top: 6px;
+}
+
+.eval-score-max {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-light);
+    margin-left: 4px;
+}
+
+.eval-grade-badge {
+    margin-top: 12px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 22px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.eval-grade-label {
+    margin: 10px 0 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.eval-grade-label.muted {
+    color: var(--text-light);
+    font-weight: 400;
+    font-size: 13px;
+}
+
+.eval-progress {
+    width: 100%;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--border-light);
+    margin-top: 16px;
+    overflow: hidden;
+}
+
+.eval-progress-bar {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.3s ease;
+}
+
+.eval-section-title {
+    font-size: 22px;
+    font-weight: 800;
+    margin: 36px 0 18px;
+    color: var(--text-primary);
+}
+
+/* Rubric */
+.eval-rubric {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+}
+
+.eval-criterion {
+    border: 1px solid var(--border-light);
+    border-radius: 14px;
+    padding: 16px;
+    background: var(--bg-white);
+}
+
+.eval-criterion-head {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.eval-criterion-icon {
+    flex: 0 0 auto;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: var(--navy-100);
+    color: var(--primary-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+.eval-criterion-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.eval-criterion-desc {
+    font-size: 13px;
+    color: var(--text-light);
+    margin-top: 2px;
+}
+
+.eval-levels {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+}
+
+.eval-level-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 8px 4px;
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    background: var(--bg-light-gray);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.eval-level-btn:hover {
+    border-color: var(--primary-blue);
+}
+
+.eval-level-btn.active {
+    background: var(--primary-blue);
+    border-color: var(--primary-blue);
+    color: #fff;
+}
+
+.eval-level-num {
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.eval-level-label {
+    font-size: 11px;
+}
+
+/* Feedback */
+.eval-feedback {
+    margin-top: 22px;
+    border: 1px solid #fcd34d;
+    background: #fffbeb;
+    border-radius: 14px;
+    padding: 18px 20px;
+}
+
+.eval-feedback h3 {
+    margin: 0 0 10px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #92400e;
+}
+
+.eval-feedback ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.eval-feedback li {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #78350f;
+}
+
+/* Examples */
+.eval-examples {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.eval-example-card {
+    border: 1px solid var(--border-light);
+    border-radius: 14px;
+    padding: 16px;
+    background: var(--bg-white);
+}
+
+.eval-example-topic {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+}
+
+.eval-example-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.eval-example-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.eval-tag {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 999px;
+}
+
+.eval-tag.bad {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.eval-tag.good {
+    background: #d1fae5;
+    color: #047857;
+}
+
+.eval-example-score {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-light);
+}
+
+.eval-example-col pre {
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12.5px;
+    line-height: 1.6;
+    padding: 12px;
+    border-radius: 10px;
+    background: var(--bg-light-gray);
+    border: 1px solid var(--border-light);
+    color: var(--text-primary);
+}
+
+.eval-example-col.after pre {
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+    color: #14532d;
+}
+
+/* Challenges */
+.eval-challenges {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+}
+
+.eval-challenge-card {
+    display: flex;
+    gap: 12px;
+    border: 1px solid var(--border-light);
+    border-radius: 14px;
+    padding: 16px;
+    background: var(--bg-white);
+}
+
+.eval-challenge-num {
+    flex: 0 0 auto;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--primary-blue);
+    color: #fff;
+    font-weight: 800;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.eval-challenge-weak {
+    margin: 0 0 8px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 13px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: #fef2f2;
+    border: 1px dashed #fca5a5;
+    color: #991b1b;
+    white-space: pre-wrap;
+}
+
+.eval-challenge-hint {
+    margin: 0;
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: var(--text-light);
+}
+
+.eval-footnote {
+    margin-top: 16px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary-blue);
+}
+
+@media (max-width: 860px) {
+    .eval-page .eval-grid,
+    .eval-rubric,
+    .eval-example-cols,
+    .eval-challenges {
+        grid-template-columns: 1fr;
+    }
+}

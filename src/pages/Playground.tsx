@@ -13,6 +13,7 @@ import {
   type Allocation,
 } from '../utils/tokenAllocation';
 import { chat, type ChatMessage } from '../utils/aiClient';
+import { isOpenAccess } from '../config/openAccess';
 import type { ReactElement } from 'react';
 
 const CALLABLE = PROVIDER_LIST.filter((p) => p.api.callable);
@@ -53,12 +54,14 @@ const Playground = (): ReactElement => {
 
   const current = allocations[provider] ?? { allocated: 0, used: 0 };
   const left = remaining(current);
+  const open = isOpenAccess(provider); // 오늘 공개 사용(배당 없이) 여부
+  const canSend = open || left > 0;     // 전송 가능 여부
 
   const send = async () => {
     const text = input.trim();
     if (!text || loading) return;
 
-    if (left <= 0) {
+    if (!open && left <= 0) {
       showToast('배당된 토큰이 모두 소진되었습니다. 강사에게 토큰 배당을 요청하세요.', 'warning');
       return;
     }
@@ -85,7 +88,7 @@ const Playground = (): ReactElement => {
       await recordUsage(email, provider, result.tokens);
       await reloadAllocations();
 
-      if (result.tokens >= left) {
+      if (!open && result.tokens >= left) {
         showToast('이번 응답으로 배당 토큰을 모두 사용했습니다.', 'warning');
       }
     } catch (err) {
@@ -130,6 +133,7 @@ const Playground = (): ReactElement => {
                 const a = allocations[p.id] ?? { allocated: 0, used: 0 };
                 const r = remaining(a);
                 const isActive = p.id === provider;
+                const pOpen = isOpenAccess(p.id);
                 return (
                   <button
                     key={p.id}
@@ -139,19 +143,19 @@ const Playground = (): ReactElement => {
                   >
                     <div className="aifree-pg-prov-top">
                       <span><i className={p.icon} style={{ color: p.color }} /> {p.name}</span>
-                      <span className="aifree-pg-prov-left">{r.toLocaleString()}</span>
+                      <span className="aifree-pg-prov-left">{pOpen ? '공개' : r.toLocaleString()}</span>
                     </div>
                     <div className="aifree-pg-bar">
                       <div
                         className="aifree-pg-bar-fill"
                         style={{
-                          width: `${a.allocated > 0 ? Math.min(100, (a.used / a.allocated) * 100) : 0}%`,
+                          width: `${pOpen ? 100 : a.allocated > 0 ? Math.min(100, (a.used / a.allocated) * 100) : 0}%`,
                           background: p.color,
                         }}
                       />
                     </div>
                     <div className="aifree-pg-prov-meta">
-                      배당 {a.allocated.toLocaleString()} · 사용 {a.used.toLocaleString()}
+                      {pOpen ? '오늘 배당 없이 공개 사용' : `배당 ${a.allocated.toLocaleString()} · 사용 ${a.used.toLocaleString()}`}
                     </div>
                   </button>
                 );
@@ -175,8 +179,14 @@ const Playground = (): ReactElement => {
                   </select>
                 </div>
                 <div className="aifree-pg-quota">
-                  잔여 <strong>{left.toLocaleString()}</strong> 토큰
-                  <span className="aifree-pg-quota-pct">({pct}% 사용)</span>
+                  {open ? (
+                    <span className="aifree-pg-open"><i className="fa-solid fa-unlock" /> 오늘 공개 사용 중</span>
+                  ) : (
+                    <>
+                      잔여 <strong>{left.toLocaleString()}</strong> 토큰
+                      <span className="aifree-pg-quota-pct">({pct}% 사용)</span>
+                    </>
+                  )}
                 </div>
               </div>
 
@@ -212,11 +222,11 @@ const Playground = (): ReactElement => {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={onKeyDown}
-                  placeholder={left > 0 ? '메시지를 입력하세요 (Enter 전송, Shift+Enter 줄바꿈)' : '배당된 토큰이 없습니다 — 강사에게 문의하세요'}
+                  placeholder={canSend ? '메시지를 입력하세요 (Enter 전송, Shift+Enter 줄바꿈)' : '배당된 토큰이 없습니다 — 강사에게 문의하세요'}
                   rows={2}
                   disabled={loading || !email}
                 />
-                <button className="btn btn-primary" onClick={send} disabled={loading || !input.trim() || left <= 0 || !email}>
+                <button className="btn btn-primary" onClick={send} disabled={loading || !input.trim() || !canSend || !email}>
                   {loading ? '응답 중…' : '전송'}
                 </button>
               </div>

@@ -101,6 +101,25 @@
 
 ---
 
+## 2026-06-18 — 프롬프트 평가 메뉴 + OpenAI 오늘 공개 사용
+
+### 1) "프롬프트 평가" 메뉴 추가 (claude 사이트 기능 이식)
+- `claude.dreamitbiz.com/prompt-evaluation` 의 휴리스틱 채점기를 그대로 이식
+- `pages/prompt/PromptEvaluation.tsx`: 자유 입력 프롬프트를 **6대 기준**(역할·맥락·지시·형식·제약·예시) 각 0~3점으로 키워드·구조 기반 자동 채점 → A~D 등급, 항목별 수동 보정, 개선 제안, Before→After 사례, 실습 과제. 한/영 지원
+- `styles/prompt-eval.css`: claude 원본 CSS를 ai-free 디자인 토큰(navy/gold·다크모드·5색 테마)으로 매핑
+- 메뉴/라우트 배선: `프롬프트` 드롭다운에 `프롬프트 평가`(`/prompt/evaluation`) 추가
+  (site.ts · PublicLayout.tsx · translations 한/영 `nav.promptEvaluation`)
+
+### 2) OpenAI 키 "오늘 공개 사용" (배당 게이팅 해제)
+- `config/openAccess.ts`: 신규 — `providers: ['chatgpt']`, `until: '2026-06-18'`
+  → 해당 provider를 로그인 사용자 전원에게 **토큰 배당 없이** 개방, **익일 자동 종료**
+- `Playground.tsx`: 공개 provider는 `left<=0` 차단을 우회(`canSend = open || left>0`).
+  Supabase에 등록된 강사 키를 그대로 사용(RLS상 로그인 필요). 사용량은 계속 기록(강사 모니터링)
+- UI: 잔여 토큰 대신 "🔓 오늘 공개 사용 중" 배지 / 사이드바 "공개" 표시
+- ⚠️ 공개 동안 강사 OpenAI 키로 실제 과금. 종료: `until`을 지난 날짜로/`providers` 비우기(익일 자동 종료)
+
+---
+
 ## 라우팅 맵
 
 | 경로 | 페이지 | 비고 |
@@ -108,6 +127,7 @@
 | `/` | Home | 소개·흐름·4대 AI |
 | `/tools`, `/tools/:provider` | Tools / ToolGuide | 무료요금제 가이드 |
 | `/examples` | Examples | 학습 예제 |
+| `/prompt/learn` `/prompt/practice` `/prompt/evaluation` `/prompt/cases` | Prompt | 학습·작성실습·**평가**·사례 |
 | `/playground` | Playground | 실습실 (로그인) |
 | `/admin/allocation` | AdminAllocation | 토큰 배당 (강사) |
 | `/about`, `/about/instructor` | About / InstructorIntro | 소개 |

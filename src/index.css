@@ -16,5 +16,6 @@
 @import './styles/responsive.css';
 @import './styles/guide-pages.css';
 @import './styles/practice.css';
+@import './styles/prompt-eval.css';
 @import './styles/site.css';
 @import './styles/aifree.css';

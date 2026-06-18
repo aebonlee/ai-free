@@ -106,6 +106,7 @@ const site: SiteConfig = {
       dropdown: [
         { path: '/prompt/learn', labelKey: 'site.nav.promptLearn' },
         { path: '/prompt/practice', labelKey: 'site.nav.promptPractice' },
+        { path: '/prompt/evaluation', labelKey: 'site.nav.promptEvaluation' },
         { path: '/prompt/cases', labelKey: 'site.nav.promptCases' },
       ]
     },
