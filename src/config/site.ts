@@ -106,10 +106,10 @@ const site: SiteConfig = {
       dropdown: [
         { path: '/prompt/learn', labelKey: 'site.nav.promptLearn' },
         { path: '/prompt/practice', labelKey: 'site.nav.promptPractice' },
-        { path: '/prompt/evaluation', labelKey: 'site.nav.promptEvaluation' },
         { path: '/prompt/cases', labelKey: 'site.nav.promptCases' },
       ]
     },
+    { path: '/prompt/evaluation', labelKey: 'site.nav.promptEvaluation', activePath: '/prompt/evaluation' },
     { path: '/playground', labelKey: 'site.nav.playground', activePath: '/playground' },
     { path: '/recommended', labelKey: 'site.nav.recommended', activePath: '/recommended' },
   ],
