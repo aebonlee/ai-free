@@ -1,4 +1,4 @@
-import{j as e,L as t}from"./index-cZMzOg2R.js";import{G as o}from"./GuidePage-DYfmIVKZ.js";import"./SEOHead-CY1DSyxp.js";const i={id:"prompt-basics",icon:"fa-lightbulb",title:"프롬프트 기초",titleEn:"Prompt Fundamentals",sections:[{title:"프롬프트란 무엇인가",titleEn:"What is a Prompt",content:`AI 모델에게 원하는 결과를 얻기 위해 전달하는 입력 텍스트를 **프롬프트(Prompt)**라고 합니다.
+import{j as e,L as t}from"./index-BXW0EjzL.js";import{G as o}from"./GuidePage-xo0ldQUU.js";import"./SEOHead-BXlvup10.js";const i={id:"prompt-basics",icon:"fa-lightbulb",title:"프롬프트 기초",titleEn:"Prompt Fundamentals",sections:[{title:"프롬프트란 무엇인가",titleEn:"What is a Prompt",content:`AI 모델에게 원하는 결과를 얻기 위해 전달하는 입력 텍스트를 **프롬프트(Prompt)**라고 합니다.
 
 ### 프롬프트의 정의
 
