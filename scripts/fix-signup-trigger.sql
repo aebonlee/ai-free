@@ -58,6 +58,47 @@ exception when others then
   return new;
 end; $fn$;
 
+-- ---------------------------------------------------------------------
+-- [2차 정리 2026-06-19] coding_/forjob_ 핸들러는 치명적이진 않았으나
+--   (예외처리가 있어 가입은 막지 않음) search_path=auth 에서 테이블을 못 찾아
+--   프로필이 트리거로 생성되지 않던 문제 → 동일하게 search_path 고정 + 스키마 명시.
+-- ---------------------------------------------------------------------
+create or replace function public.handle_coding_new_user()
+returns trigger language plpgsql security definer set search_path = public as $fn$
+begin
+  insert into public.coding_profiles (id, email, display_name, avatar_url, provider, role, signup_domain, updated_at)
+  values (new.id, new.email,
+          coalesce(new.raw_user_meta_data->>'full_name', new.raw_user_meta_data->>'name', split_part(new.email, '@', 1)),
+          coalesce(new.raw_user_meta_data->>'avatar_url', ''),
+          coalesce(new.raw_user_meta_data->>'provider', 'email'),
+          'member', 'coding.dreamitbiz.com', now())
+  on conflict (id) do update set
+    email = excluded.email,
+    display_name = coalesce(excluded.display_name, public.coding_profiles.display_name),
+    avatar_url = coalesce(excluded.avatar_url, public.coding_profiles.avatar_url),
+    updated_at = now();
+  return new;
+exception when others then
+  raise warning 'handle_coding_new_user failed for %: %', new.email, sqlerrm;
+  return new;
+end; $fn$;
+
+create or replace function public.handle_forjob_new_user()
+returns trigger language plpgsql security definer set search_path = public as $fn$
+begin
+  insert into public.forjob_profiles (id, name, email, avatar_url)
+  values (new.id,
+          coalesce(new.raw_user_meta_data->>'full_name', new.raw_user_meta_data->>'name', split_part(new.email, '@', 1)),
+          new.email,
+          coalesce(new.raw_user_meta_data->>'avatar_url', ''))
+  on conflict (id) do update set
+    name = excluded.name, email = excluded.email, avatar_url = excluded.avatar_url;
+  return new;
+exception when others then
+  raise warning 'handle_forjob_new_user failed for %: %', new.email, sqlerrm;
+  return new;
+end; $fn$;
+
 -- =====================================================================
 -- [예방 권고] auth.users 에 트리거를 추가하는 모든 사이트는 핸들러 함수에
 --   반드시 `SET search_path = public` + 스키마 명시 + EXCEPTION 처리를 둘 것.
